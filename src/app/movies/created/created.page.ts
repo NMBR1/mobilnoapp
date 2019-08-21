@@ -11,15 +11,23 @@ import {MoviesService} from '../movies.service';
   styleUrls: ['./created.page.scss'],
 })
 export class CreatedPage implements OnInit, OnDestroy {
-  movies: Movie[];
+  movies: Movie[] = [];
+  isLoading = false;
   private moviesSub: Subscription;
 
-  constructor(private placesService: MoviesService, private router: Router) {
+  constructor(private moviesService: MoviesService, private router: Router) {
   }
 
   ngOnInit() {
-    this.moviesSub = this.placesService.movies.subscribe(movies => {
+    this.moviesSub = this.moviesService.movies.subscribe(movies => {
       this.movies = movies;
+    });
+  }
+
+  ionViewWillEnter() {
+    this.isLoading = true;
+    this.moviesService.fetchMovies().subscribe(() => {
+      this.isLoading = false;
     });
   }
 
