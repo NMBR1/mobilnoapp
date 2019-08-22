@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, generate} from 'rxjs';
+import {BehaviorSubject, generate, of} from 'rxjs';
 import {take, map, tap, delay, switchMap} from 'rxjs/operators';
 import {Movie} from './movie.model';
 import {AuthService} from '../auth/auth.service';
@@ -42,11 +42,17 @@ export class MoviesService {
                     for (const key in resData) {
                         if (resData.hasOwnProperty(key)) {
                             // tslint:disable-next-line:max-line-length
-                            movies.push(new Movie(key, resData[key].title, resData[key].description, resData[key].imageUrl, resData[key].userId));
+                            movies.push(new Movie(
+                                key,
+                                resData[key].title,
+                                resData[key].description,
+                                resData[key].imageUrl,
+                                resData[key].userId
+                            ));
                         }
                     }
                     // return movies;
-                    return [];
+                    return movies;
                 }),
                 tap(movies => {
                     this._movies.next(movies);
@@ -55,12 +61,10 @@ export class MoviesService {
     }
 
     getMovie(id: string) {
-        return this.movies.pipe(
-            take(1),
-            map(movies => {
-                return {...movies.find(p => p.id === id)};
-            })
-        );
+        return this.httpClient.get<MovieData>(`https://mobilnoapp.firebaseio.com/movies/${id}.json`).pipe(
+            map(movieData => {
+                return new Movie(id, movieData.title, movieData.description, movieData.imageUrl, movieData.userId);
+            }));
     }
 
     addMovie(
@@ -68,16 +72,22 @@ export class MoviesService {
         description: string,
     ) {
         let generatedId: string;
-        const newMovie = new Movie(
-            Math.random().toString(),
-            title,
-            description,
-            'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-538096543_medium.jpg?sharp=10&vib=20&w=1200',
-            this.authService.userId
-        );
-        // tslint:disable-next-line:max-line-length
-        return this.httpClient.post<{ name: string }>('https://mobilnoapp.firebaseio.com/movies.json', {...newMovie, id: null}).pipe(
-            switchMap(resData => {
+        let newMovie;
+        return this.authService.userId.pipe(take(1), switchMap(
+            userId => {
+                if (!userId) {
+                    throw new Error('No user id found!');
+                }
+                newMovie = new Movie(
+                    Math.random().toString(),
+                    title,
+                    description,
+                    'https://lonelyplanetimages.imgix.net/mastheads/GettyImages-538096543_medium.jpg?sharp=10&vib=20&w=1200',
+                    userId
+                );
+                return this.httpClient.post<{ name: string }>('https://mobilnoapp.firebaseio.com/movies.json',
+                    {...newMovie, id: null});
+            }), switchMap(resData => {
                 generatedId = resData.name;
                 return this.movies;
             }),
@@ -97,13 +107,26 @@ export class MoviesService {
     }
 
     updateMovie(movieId: string, title: string, description: string) {
-        return this.movies.pipe(take(1), delay(1000), tap(movies => {
-            const updateMovieIndex = movies.findIndex(mo => mo.id === movieId);
-            const updatedMovies = [...movies];
-            const oldMovie = updatedMovies[updateMovieIndex];
-            // tslint:disable-next-line:max-line-length
-            updatedMovies[updateMovieIndex] = new Movie(oldMovie.id, title, description, oldMovie.imageUrl, 'm1');
-            this._movies.next(updatedMovies);
-        }));
+        let updatedMovies: Movie[];
+        return this.movies.pipe(
+            take(1), switchMap(movies => {
+                if (!movies || movies.length <= 0) {
+                    return this.fetchMovies();
+                } else {
+                    return of(movies);
+                }
+            }),
+            switchMap(movies => {
+                const updateMovieIndex = movies.findIndex(mo => mo.id === movieId);
+                updatedMovies = [...movies];
+                const oldMovie = updatedMovies[updateMovieIndex];
+                // tslint:disable-next-line:max-line-length
+                updatedMovies[updateMovieIndex] = new Movie(oldMovie.id, title, description, oldMovie.imageUrl, oldMovie.userId);
+                return this.httpClient.put(`https://mobilnoapp.firebaseio.com/movies/${movieId}.json`,
+                    {...updatedMovies[updateMovieIndex], id: null});
+            })
+            , tap(() => {
+                this._movies.next(updatedMovies);
+            }));
     }
 }

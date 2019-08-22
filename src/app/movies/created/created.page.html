@@ -25,7 +25,7 @@
         </div>
         <ion-list *ngIf="!isLoading && movies?.length > 0">
           <ion-item-sliding *ngFor="let movie of movies" #slidingItem>
-            <ion-item [routerLink]="['/', 'movies', 'tabs', 'created', movie.id]">
+            <ion-item [routerLink]="['/', 'movies', 'tabs', 'search', movie.id]">
                   <ion-thumbnail slot="start" >
                     <ion-img [src]="movie.imageUrl"></ion-img>
                   </ion-thumbnail>

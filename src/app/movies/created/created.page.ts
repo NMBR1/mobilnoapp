@@ -6,40 +6,41 @@ import {Subscription} from 'rxjs';
 import {MoviesService} from '../movies.service';
 
 @Component({
-  selector: 'app-created',
-  templateUrl: './created.page.html',
-  styleUrls: ['./created.page.scss'],
+    selector: 'app-created',
+    templateUrl: './created.page.html',
+    styleUrls: ['./created.page.scss'],
 })
 export class CreatedPage implements OnInit, OnDestroy {
-  movies: Movie[] = [];
-  isLoading = false;
-  private moviesSub: Subscription;
+    movies: Movie[] = [];
+    isLoading = false;
+    private moviesSub: Subscription;
 
-  constructor(private moviesService: MoviesService, private router: Router) {
-  }
-
-  ngOnInit() {
-    this.moviesSub = this.moviesService.movies.subscribe(movies => {
-      this.movies = movies;
-    });
-  }
-
-  ionViewWillEnter() {
-    this.isLoading = true;
-    this.moviesService.fetchMovies().subscribe(() => {
-      this.isLoading = false;
-    });
-  }
-
-  onEdit(movieId: string, slidingItem: IonItemSliding) {
-    slidingItem.close();
-    this.router.navigate(['/', 'movies', 'tabs', 'created', 'edit', movieId]);
-    console.log('Editing item', movieId);
-  }
-
-  ngOnDestroy() {
-    if (this.moviesSub) {
-      this.moviesSub.unsubscribe();
+    constructor(private moviesService: MoviesService, private router: Router) {
     }
-  }
+
+    ngOnInit() {
+        this.moviesSub = this.moviesService.movies.subscribe(movies => {
+            this.movies = movies;
+
+        });
+    }
+
+    ionViewWillEnter() {
+        this.isLoading = true;
+        this.moviesService.fetchMovies().subscribe(() => {
+            this.isLoading = false;
+        });
+    }
+
+    onEdit(movieId: string, slidingItem: IonItemSliding) {
+        slidingItem.close();
+        this.router.navigate(['/', 'movies', 'tabs', 'created', 'edit', movieId]);
+        console.log('Editing item', movieId);
+    }
+
+    ngOnDestroy() {
+        if (this.moviesSub) {
+            this.moviesSub.unsubscribe();
+        }
+    }
 }
