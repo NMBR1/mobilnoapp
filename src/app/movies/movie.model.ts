@@ -3,6 +3,7 @@ export class Movie {
                 public title: string,
                 public descsription: string,
                 public imageUrl: string,
+                public rating: number,
                 public userId: string) {
 
     }

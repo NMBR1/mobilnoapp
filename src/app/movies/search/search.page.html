@@ -3,7 +3,7 @@
         <ion-menu-button></ion-menu-button>
     </ion-buttons>
     <ion-toolbar>
-        <ion-title>search</ion-title>
+        <ion-title>All Movies</ion-title>
     </ion-toolbar>
 </ion-header>
 
@@ -18,7 +18,7 @@
                     <ion-card-header>
                         <ion-card-title>{{ loadedMovies[0]?.title }}</ion-card-title>
                     </ion-card-header>
-                    <ion-img *ngIf="first" [src]="loadedMovies[0]?.imageUrl"
+                    <ion-img *ngIf="first" [src]="loadedMovies[0].imageUrl"
                     ></ion-img>
                     <ion-card-content>
                         <p>{{ first?.descsription }}</p>

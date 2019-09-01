@@ -1,23 +1,33 @@
 <ion-header>
-  <ion-toolbar>
-    <ion-buttons slot="start">
-      <ion-back-button defaultHref="/movies/tabs/search"></ion-back-button>
-    </ion-buttons>
-    <ion-title>{{ movie?.title }}</ion-title>
-  </ion-toolbar>
+    <ion-toolbar>
+        <ion-buttons slot="start">
+            <ion-back-button></ion-back-button>
+        </ion-buttons>
+        <ion-title>{{ movie?.title }}</ion-title>
+    </ion-toolbar>
 </ion-header>
 
-<ion-content>
-  <ion-grid no-padding>
-    <ion-row>
-      <ion-col size-sm="6" offset-sm="3" no-padding>
-        <ion-img [src]="movie?.imageUrl"></ion-img>
-      </ion-col>
-    </ion-row>
-    <ion-row>
-      <ion-col size-sm="6" offset-sm="3" text-center padding>
-        <p>{{ movie?.descsription }}</p>
-      </ion-col>
-    </ion-row>
-  </ion-grid>
+<ion-content padding>
+
+    <!--Backdrop i poster izbrisati!!!!!!!!-->
+
+    <div class="backdrop" *ngIf="movie">
+        <img *ngIf="movie.imageUrl" [src]="movie.imageUrl">
+    </div>
+
+    <div class="movie-data" *ngIf="movie">
+        <div class="title">{{ movie.title }}</div>
+        <div class="year">{{ 2017 }} </div>
+        <div class="vote">
+            <div class="stars">
+                <ion-icon
+                        [name]="movie.rating >= 2 ? 'star' : movie.rating >= 1 ? 'star-half' : 'star-outline'"></ion-icon>
+                <ion-icon [name]="movie.rating >= 4 ? 'star' : movie.rating >= 3 ? 'star-half' : 'star-outline'"></ion-icon>
+            <ion-icon [name]="movie.rating >= 6 ? 'star' : movie.rating >= 5 ? 'star-half' : 'star-outline'"></ion-icon>
+            <ion-icon [name]="movie.rating >= 8 ? 'star' : movie.rating >= 7 ? 'star-half' : 'star-outline'"></ion-icon>
+            <ion-icon [name]="movie.rating >= 10 ? 'star' : movie.rating >= 9 ? 'star-half' : 'star-outline'"></ion-icon>
+          </div>
+        </div>
+        <div class="overview">{{ movie.descsription }}</div>
+    </div>
 </ion-content>

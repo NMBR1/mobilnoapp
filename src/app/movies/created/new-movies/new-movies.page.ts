@@ -27,6 +27,14 @@ export class NewMoviesPage implements OnInit {
       description: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.maxLength(180)]
+      }),
+      imageUrl: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required]
+      }),
+      rating: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(1), Validators.max(10)]
       })
     });
   }
@@ -37,7 +45,7 @@ export class NewMoviesPage implements OnInit {
     }
     this.loadingCtrl
         .create({
-          message: 'Creating place...'
+          message: 'Creating movie...'
         })
         .then(loadingEl => {
           loadingEl.present();
@@ -45,6 +53,8 @@ export class NewMoviesPage implements OnInit {
               .addMovie(
                   this.form.value.title,
                   this.form.value.description,
+                  this.form.value.imageUrl,
+                  this.form.value.rating
               )
               .subscribe(() => {
                 loadingEl.dismiss();
