@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-back-button defaultHref="/movies/tabs/search"></ion-back-button>
     </ion-buttons>
-    <ion-title>{{ movie.title }}</ion-title>
+    <ion-title>{{ movie?.title }}</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -11,12 +11,12 @@
   <ion-grid no-padding>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" no-padding>
-        <ion-img [src]="movie.imageUrl"></ion-img>
+        <ion-img [src]="movie?.imageUrl"></ion-img>
       </ion-col>
     </ion-row>
     <ion-row>
       <ion-col size-sm="6" offset-sm="3" text-center padding>
-        <p>{{ movie.descsription }}</p>
+        <p>{{ movie?.descsription }}</p>
       </ion-col>
     </ion-row>
   </ion-grid>
