@@ -4,7 +4,7 @@ import {Movie} from '../movie.model';
 import {Observable, Subscription} from 'rxjs';
 import {MenuController, NavController} from '@ionic/angular';
 import {SegmentChangeEventDetail} from '@ionic/core';
-import {FormControl} from '@angular/forms';
+import {FormControl, NgModel} from '@angular/forms';
 import {debounceTime, map} from 'rxjs/operators';
 
 @Component({
@@ -37,35 +37,36 @@ export class SearchPage implements OnInit, OnDestroy {
         });
 
         this.setFilteredItems();
-
-        this.searchControl.valueChanges
-            .pipe(debounceTime(700))
-            .subscribe(search => {
-                this.setFilteredItems();
-                this.searchTerm = search;
-                this.searching = false;
-            });
+        /*
+                this.searchControl.valueChanges
+                    .pipe(debounceTime(600))
+                    .subscribe(() => {
+                        this.setFilteredItems();
+                        this.searching = false;
+                    });*/
     }
 
-    ionViewDidLoad() {
-        console.log('ZASTO NECE DA SE IZVRSAVA');
-        this.setFilteredItems();
-
-        this.searchControl.valueChanges.subscribe(search => {
-            this.searching = false;
+    /*    ionViewDidLoad() {
+            console.log('ZASTO NECE DA SE IZVRSAVA');
             this.setFilteredItems();
 
-        });
+            this.searchControl.valueChanges.subscribe(search => {
+                this.searching = false;
+                this.setFilteredItems();
 
-
-    }
+            });
+        }*/
 
     onSearchInput() {
         this.searching = true;
+        // @ts-ignore
+        setTimeout(console.log('CEKANJE'), 500);
+        this.setFilteredItems();
     }
 
     setFilteredItems() {
         this.items = this.moviesService.filterItems(this.searchTerm);
+        this.searching = false;
     }
 
     ionViewWillEnter() {

@@ -20,6 +20,7 @@
                 <ion-searchbar
                         [formControl]="searchControl"
                         (ionChange)="onSearchInput()"
+                        [(ngModel)]="searchTerm"
                 >
                 </ion-searchbar>
                 <div *ngIf="searching" class="spinner-container">
