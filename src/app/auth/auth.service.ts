@@ -33,10 +33,6 @@ export class AuthService {
         }));
     }
 
-    vratiUsera(): string {
-        return this._user.getValue().id;
-    }
-
     get userId() {
         return this._user.asObservable().pipe(map(user => {
             if (user) {
@@ -69,6 +65,14 @@ export class AuthService {
     private setUserData(userData: AuthResponseData) {
         const expirationTime = new Date(new Date().getTime() + +userData.expiresIn * 1000);
         this._user.next(new User(userData.localId, userData.email, userData.idToken, expirationTime));
+    }
+
+    vratiUsera() {
+        return this._user.getValue().id;
+    }
+
+    vratiMejl() {
+        return this._user.getValue().email;
     }
 
 }

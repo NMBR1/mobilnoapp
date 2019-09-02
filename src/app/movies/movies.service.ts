@@ -50,7 +50,7 @@ export class MoviesService {
         return this.httpClient.get<{ [key: string]: MovieData }>('https://mobilnoapp.firebaseio.com/movies.json')
             .pipe(map(resData => {
                     const movies = [];
-                    let userId: string = '';
+                    let userId = '';
                     for (const key in resData) {
                         if (resData.hasOwnProperty(key)) {
                             // tslint:disable-next-line:max-line-length

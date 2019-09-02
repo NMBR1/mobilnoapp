@@ -28,9 +28,16 @@ export class CreatedPage implements OnInit, OnDestroy {
 
     ionViewWillEnter() {
         this.isLoading = true;
-        this.moviesService.fetchMoviesByUser().subscribe(() => {
-            this.isLoading = false;
-        });
+        if (this.authService.vratiMejl() === 'admin@gmail.com') {
+            this.moviesService.fetchMovies().subscribe(() => {
+                this.isLoading = false;
+            });
+        } else {
+            this.moviesService.fetchMoviesByUser().subscribe(() => {
+                this.isLoading = false;
+            });
+        }
+
     }
 
     onEdit(movieId: string, slidingItem: IonItemSliding) {
