@@ -28,9 +28,18 @@ export class MoviesService {
     // tslint:disable-next-line:variable-name
     private _movies: BehaviorSubject<Movie[]> = new BehaviorSubject<Movie[]>();
 
+    private filteredMovies: Movie[] = [];
+
+    filterItems(searchTerm) {
+        return this.filteredMovies.filter(movie => {
+            return movie.title.toLowerCase().indexOf(searchTerm.toLowerCase()) > -1;
+        });
+    }
+
     get movies() {
         return this._movies.asObservable();
     }
+
 
     constructor(private authService: AuthService,
                 private httpClient: HttpClient) {
@@ -51,8 +60,17 @@ export class MoviesService {
                                 resData[key].rating,
                                 resData[key].userId
                             ));
+                         /*   this.filteredMovies.push(new Movie(
+                                key,
+                                resData[key].title,
+                                resData[key].description,
+                                resData[key].imageUrl,
+                                resData[key].rating,
+                                resData[key].userId
+                            ));*/
                         }
                     }
+                    this.filteredMovies = movies;
                     // return movies;
                     return movies;
                 }),
@@ -67,6 +85,10 @@ export class MoviesService {
             map(movieData => {
                 return new Movie(id, movieData.title, movieData.description, movieData.imageUrl, movieData.rating, movieData.userId);
             }));
+    }
+
+    deleteMovie(movieId: string) {
+        return this.httpClient.delete(`https://mobilnoapp.firebaseio.com/movies/${movieId}.json`);
     }
 
     addMovie(

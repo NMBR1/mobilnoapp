@@ -1,9 +1,16 @@
+
+
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
             <ion-back-button></ion-back-button>
         </ion-buttons>
         <ion-title>{{ movie?.title }}</ion-title>
+        <ion-buttons slot="end">
+            <ion-button (click)="onDelete(movie.id)">
+                <ion-icon name="cut" slot="icon-only" ></ion-icon>
+            </ion-button>
+        </ion-buttons>
     </ion-toolbar>
 </ion-header>
 
@@ -23,11 +30,16 @@
                 <ion-icon
                         [name]="movie.rating >= 2 ? 'star' : movie.rating >= 1 ? 'star-half' : 'star-outline'"></ion-icon>
                 <ion-icon [name]="movie.rating >= 4 ? 'star' : movie.rating >= 3 ? 'star-half' : 'star-outline'"></ion-icon>
-            <ion-icon [name]="movie.rating >= 6 ? 'star' : movie.rating >= 5 ? 'star-half' : 'star-outline'"></ion-icon>
-            <ion-icon [name]="movie.rating >= 8 ? 'star' : movie.rating >= 7 ? 'star-half' : 'star-outline'"></ion-icon>
-            <ion-icon [name]="movie.rating >= 10 ? 'star' : movie.rating >= 9 ? 'star-half' : 'star-outline'"></ion-icon>
-          </div>
+                <ion-icon [name]="movie.rating >= 6 ? 'star' : movie.rating >= 5 ? 'star-half' : 'star-outline'"></ion-icon>
+                <ion-icon [name]="movie.rating >= 8 ? 'star' : movie.rating >= 7 ? 'star-half' : 'star-outline'"></ion-icon>
+                <ion-icon [name]="movie.rating >= 10 ? 'star' : movie.rating >= 9 ? 'star-half' : 'star-outline'"></ion-icon>
+            </div>
         </div>
-        <div class="overview">{{ movie.descsription }}</div>
+        <div class="overview">{{ movie.description }}</div>
+
     </div>
 </ion-content>
+
+
+
+

@@ -45,7 +45,7 @@ export class EditMoviesPage implements OnInit, OnDestroy {
                                 updateOn: 'blur',
                                 validators: [Validators.required]
                             }),
-                            description: new FormControl(this.movie.descsription, {
+                            description: new FormControl(this.movie.description, {
                                 updateOn: 'blur',
                                 validators: [Validators.required, Validators.maxLength(180)]
                             })
