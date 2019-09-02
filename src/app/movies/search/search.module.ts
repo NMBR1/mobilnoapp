@@ -19,7 +19,8 @@ const routes: Routes = [
         CommonModule,
         ReactiveFormsModule,
         IonicModule,
-        RouterModule.forChild(routes)
+        RouterModule.forChild(routes),
+        FormsModule
     ],
     declarations: [SearchPage]
 })

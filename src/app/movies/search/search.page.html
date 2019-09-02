@@ -7,52 +7,25 @@
     </ion-toolbar>
 </ion-header>
 
-<ion-content>
+<ion-content padding>
     <div *ngIf="isLoading" text-center>
         <ion-spinner color="primary"></ion-spinner>
     </div>
-    <ion-grid *ngIf="!isLoading && loadedMovies?.length > 0">
-        <ion-row>
-            <ion-col size="12" size-sm="8" offset-sm="2" text-center>
-                <div *ngIf="isLoading" text-center>
-                    <ion-spinner color="primary"></ion-spinner>
-                </div>
-                <ion-searchbar
-                        [formControl]="searchControl"
-                        (ionChange)="onSearchInput()"
-                        [(ngModel)]="searchTerm"
-                >
-                </ion-searchbar>
-                <div *ngIf="searching" class="spinner-container">
-                    <ion-spinner></ion-spinner>
-                </div>
-                <ion-card>
-                    <ion-card-header>
-                        <ion-card-title>{{ loadedMovies[0]?.title }}</ion-card-title>
-                    </ion-card-header>
-                    <ion-img  [src]="loadedMovies[0].imageUrl"
-                    ></ion-img>
-                    <ion-card-content>
-                        <p>{{ loadedMovies[0]?.description }}</p>
-                    </ion-card-content>
-                </ion-card>
-            </ion-col>
-        </ion-row>
-        <ion-row>
-            <ion-col size="12" size-sm="8" offset-sm="2" text-center>
-                <ion-list>
-                    <ion-item *ngFor="let movie of items">
-                        <ion-thumbnail slot="start">
-                            <ion-img [src]="movie?.imageUrl"></ion-img>
-                        </ion-thumbnail>
-                        <ion-label>
-                            <h2>{{ movie?.title }}</h2>
-                            <p>{{ movie?.description }}</p>
-                        </ion-label>
-                    </ion-item>
-                </ion-list>
-            </ion-col>
-        </ion-row>
-    </ion-grid>
+    <ion-searchbar
+            (ionChange)="onSearchInput()"
+            [(ngModel)]="searchTerm"
+    ></ion-searchbar>
+<div *ngIf="!isLoading && loadedMovies?.length > 0">
+    <div class="movies-flex">
+        <div class="movie" *ngFor="let m of items">
+            <div class="poster">
+                <img [src]="m.imageUrl" class="poster">
+            </div>
+            <div class="title">{{ m?.title }}</div>
+            <div class="year"> 2019 </div>
+            <div class="vote"><ion-icon name="star"><b>{{m.rating}}</b>/10</ion-icon></div>
+        </div>
+    </div>
+</div>
 
 </ion-content>

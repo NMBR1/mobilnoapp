@@ -19,14 +19,11 @@ export class SearchPage implements OnInit, OnDestroy {
     private moviesSub: Subscription;
 
     searchTerm = '';
-    searchControl: FormControl;
     items: Movie[];
-    searching: any = false;
 
     constructor(private moviesService: MoviesService,
                 private menuCtrl: MenuController,
                 private navCtrl: NavController) {
-        this.searchControl = new FormControl();
     }
 
     ngOnInit() {
@@ -35,30 +32,12 @@ export class SearchPage implements OnInit, OnDestroy {
             this.listedLoadedMovies = this.listedLoadedMovies;
             this.items = this.loadedMovies;
         });
-
-        this.setFilteredItems();
-        /*
-                this.searchControl.valueChanges
-                    .pipe(debounceTime(600))
-                    .subscribe(() => {
-                        this.setFilteredItems();
-                        this.searching = false;
-                    });*/
+        /*this.setFilteredItems();*/
     }
 
-    /*    ionViewDidLoad() {
-            console.log('ZASTO NECE DA SE IZVRSAVA');
-            this.setFilteredItems();
 
-            this.searchControl.valueChanges.subscribe(search => {
-                this.searching = false;
-                this.setFilteredItems();
-
-            });
-        }*/
 
     onSearchInput() {
-        this.searching = true;
         // @ts-ignore
         setTimeout(console.log('CEKANJE'), 500);
         this.setFilteredItems();
@@ -66,7 +45,6 @@ export class SearchPage implements OnInit, OnDestroy {
 
     setFilteredItems() {
         this.items = this.moviesService.filterItems(this.searchTerm);
-        this.searching = false;
     }
 
     ionViewWillEnter() {
