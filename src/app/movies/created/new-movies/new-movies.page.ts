@@ -35,6 +35,10 @@ export class NewMoviesPage implements OnInit {
       rating: new FormControl(null, {
         updateOn: 'blur',
         validators: [Validators.required, Validators.min(1), Validators.max(10)]
+      }),
+      year: new FormControl(null, {
+        updateOn: 'blur',
+        validators: [Validators.required, Validators.min(1900), Validators.max(2050)]
       })
     });
   }
@@ -54,7 +58,8 @@ export class NewMoviesPage implements OnInit {
                   this.form.value.title,
                   this.form.value.description,
                   this.form.value.imageUrl,
-                  this.form.value.rating
+                  this.form.value.rating,
+                  this.form.value.year
               )
               .subscribe(() => {
                 loadingEl.dismiss();

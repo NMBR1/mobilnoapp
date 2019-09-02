@@ -10,6 +10,7 @@ interface MovieData {
     imageUrl: string;
     title: string;
     rating: number;
+    year: number;
     userId: string;
 }
 
@@ -58,6 +59,7 @@ export class MoviesService {
                                 resData[key].description,
                                 resData[key].imageUrl,
                                 resData[key].rating,
+                                resData[key].year,
                                 resData[key].userId
                             ));
                          /*   this.filteredMovies.push(new Movie(
@@ -83,7 +85,7 @@ export class MoviesService {
     getMovie(id: string) {
         return this.httpClient.get<MovieData>(`https://mobilnoapp.firebaseio.com/movies/${id}.json`).pipe(
             map(movieData => {
-                return new Movie(id, movieData.title, movieData.description, movieData.imageUrl, movieData.rating, movieData.userId);
+                return new Movie(id, movieData.title, movieData.description, movieData.imageUrl, movieData.rating, movieData.year, movieData.userId);
             }));
     }
 
@@ -95,7 +97,8 @@ export class MoviesService {
         title: string,
         description: string,
         imageUrl: string,
-        rating: number
+        rating: number,
+        year: number
     ) {
         let generatedId: string;
         let newMovie;
@@ -110,6 +113,7 @@ export class MoviesService {
                     description,
                     imageUrl,
                     rating,
+                    year,
                     userId
                 );
                 return this.httpClient.post<{ name: string }>('https://mobilnoapp.firebaseio.com/movies.json',
@@ -148,7 +152,7 @@ export class MoviesService {
                 updatedMovies = [...movies];
                 const oldMovie = updatedMovies[updateMovieIndex];
                 // tslint:disable-next-line:max-line-length
-                updatedMovies[updateMovieIndex] = new Movie(oldMovie.id, title, description, oldMovie.imageUrl, oldMovie.rating, oldMovie.userId);
+                updatedMovies[updateMovieIndex] = new Movie(oldMovie.id, title, description, oldMovie.imageUrl, oldMovie.rating, oldMovie.year, oldMovie.userId);
                 return this.httpClient.put(`https://mobilnoapp.firebaseio.com/movies/${movieId}.json`,
                     {...updatedMovies[updateMovieIndex], id: null});
             })

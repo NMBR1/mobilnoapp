@@ -1,3 +1,28 @@
+ion-card{
+  display: flex;
+  flex-direction: column;
+
+}
+ion-card-content{
+
+  width: 150px !important;
+  height: 220px !important;
+}
+ion-card-title{
+  width: 120px !important;
+  height: 160px !important;
+}
+img{
+  max-width:80%;
+  border: 1px gray solid;
+}
+.title{
+  margin-top: -20px;
+  padding: 10px;
+  font-color: black;
+  font-size:11px;
+  font-weight: bold;
+}
 ion-header ion-icon {
   font-size: 24px;
 }
@@ -43,9 +68,10 @@ h1 {
     div.poster {
       position: relative;
       width: 100%;
-      height: 230px;
+      height: 70px;
       background: #eee;
       border-radius: 6px;
+      padding: 10px;
       img.poster {
         width: 100%;
         height: 230px;
