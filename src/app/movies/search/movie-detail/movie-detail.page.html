@@ -1,7 +1,7 @@
 <ion-header>
     <ion-toolbar>
         <ion-buttons slot="start">
-            <ion-back-button defaultHref="/movies/tabs/created"></ion-back-button>
+            <ion-back-button defaultHref="/movies/tabs/search"></ion-back-button>
         </ion-buttons>
         <ion-title>{{ movie?.title }}</ion-title>
         <ion-buttons slot="end">
@@ -13,8 +13,6 @@
 </ion-header>
 
 <ion-content padding>
-
-    <!--Backdrop i poster izbrisati!!!!!!!!-->
 
     <div class="backdrop" *ngIf="movie">
         <img *ngIf="movie.imageUrl" [src]="movie.imageUrl">

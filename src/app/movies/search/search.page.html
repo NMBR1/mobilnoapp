@@ -31,7 +31,7 @@
     <ion-grid>
         <ion-row>
             <ion-col size="6" *ngFor="let m of items">
-                <ion-card>
+                <ion-card [routerLink]="['/', 'movies', 'tabs', 'search', m.id]">
                     <ion-card-content>
                         <ion-card-title>
                             <img [src]="m.imageUrl">
