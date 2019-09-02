@@ -1,7 +1,7 @@
 import {Component, OnDestroy, OnInit} from '@angular/core';
 import {Movie} from '../../movie.model';
 import {Subscription} from 'rxjs';
-import {ActionSheetController, LoadingController, ModalController, NavController} from '@ionic/angular';
+import {ActionSheetController, AlertController, LoadingController, ModalController, NavController} from '@ionic/angular';
 import {ActivatedRoute, Router} from '@angular/router';
 import {MoviesService} from '../../movies.service';
 import {AuthService} from '../../../auth/auth.service';
@@ -23,8 +23,9 @@ export class MovieDetailPage implements OnInit, OnDestroy {
         private modalCtrl: ModalController,
         private actionSheetCtrl: ActionSheetController,
         private loadingCtrl: LoadingController,
-        private authService: AuthService
-    ) {}
+        private authService: AuthService,
+    ) {
+    }
 
     ngOnInit() {
 
@@ -43,19 +44,40 @@ export class MovieDetailPage implements OnInit, OnDestroy {
                 });
         });
     }
-    onDelete(id: string) {
-        this.loadingCtrl.create({
-            message: 'Deleting movie...'
-        }).then(loadingEl => {
-            loadingEl.present();
-            this.moviesService.deleteMovie(id).subscribe(() => {
-                loadingEl.dismiss();
-                this.router.navigate(['/movies/tabs/search']);
-            });
+
+    async  onDelete(id: string) {
+        const actionSheet = await this.actionSheetCtrl.create({
+            header: 'Deleting movies',
+            buttons: [{
+                text: 'Delete',
+                icon: 'trash',
+                handler: () => {
+                    console.log('Deleting .........');
+                    this.loadingCtrl.create({
+                        message: 'Deleting movie...'
+                    }).then(loadingEl => {
+                        loadingEl.present();
+                        this.moviesService.deleteMovie(id).subscribe(() => {
+                            loadingEl.dismiss();
+                            this.router.navigate(['/movies/tabs/search']);
+                        });
+                    });
+                }
+            }, {
+                text: 'Cancel',
+                icon: 'close',
+                handler: () => {
+                    console.log('Canceled clicked');
+                    this.router.navigate(['/movies/tabs/search']);
+                }
+            }]
         });
+
+        await actionSheet.present();
     }
 
-    ngOnDestroy() {
+
+    ngOnDestroy(): void {
         if (this.movieSub) {
             this.movieSub.unsubscribe();
         }
