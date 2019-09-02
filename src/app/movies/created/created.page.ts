@@ -4,6 +4,7 @@ import {Router} from '@angular/router';
 import {IonItemSliding} from '@ionic/angular';
 import {Subscription} from 'rxjs';
 import {MoviesService} from '../movies.service';
+import {AuthService} from '../../auth/auth.service';
 
 @Component({
     selector: 'app-created',
@@ -15,7 +16,7 @@ export class CreatedPage implements OnInit, OnDestroy {
     isLoading = false;
     private moviesSub: Subscription;
 
-    constructor(private moviesService: MoviesService, private router: Router) {
+    constructor(private moviesService: MoviesService, private router: Router, private authService: AuthService) {
     }
 
     ngOnInit() {
@@ -27,7 +28,7 @@ export class CreatedPage implements OnInit, OnDestroy {
 
     ionViewWillEnter() {
         this.isLoading = true;
-        this.moviesService.fetchMovies().subscribe(() => {
+        this.moviesService.fetchMoviesByUser().subscribe(() => {
             this.isLoading = false;
         });
     }

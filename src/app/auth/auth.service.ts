@@ -33,6 +33,10 @@ export class AuthService {
         }));
     }
 
+    vratiUsera(): string {
+        return this._user.getValue().id;
+    }
+
     get userId() {
         return this._user.asObservable().pipe(map(user => {
             if (user) {

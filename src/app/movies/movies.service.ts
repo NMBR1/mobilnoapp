@@ -1,5 +1,5 @@
 import {Injectable} from '@angular/core';
-import {BehaviorSubject, generate, of} from 'rxjs';
+import {BehaviorSubject, generate, Observable, of, Subscription} from 'rxjs';
 import {take, map, tap, delay, switchMap} from 'rxjs/operators';
 import {Movie} from './movie.model';
 import {AuthService} from '../auth/auth.service';
@@ -45,6 +45,39 @@ export class MoviesService {
     constructor(private authService: AuthService,
                 private httpClient: HttpClient) {
     }
+
+    fetchMoviesByUser() {
+        return this.httpClient.get<{ [key: string]: MovieData }>('https://mobilnoapp.firebaseio.com/movies.json')
+            .pipe(map(resData => {
+                    const movies = [];
+                    let userId: string = '';
+                    for (const key in resData) {
+                        if (resData.hasOwnProperty(key)) {
+                            // tslint:disable-next-line:max-line-length
+                            userId = this.authService.vratiUsera();
+                            if (userId === resData[key].userId ) {
+                                movies.push(new Movie(
+                                    key,
+                                    resData[key].title,
+                                    resData[key].description,
+                                    resData[key].imageUrl,
+                                    resData[key].rating,
+                                    resData[key].year,
+                                    resData[key].userId
+                                ));
+                            }
+                        }
+                    }
+                    this.filteredMovies = movies;
+                    // return movies;
+                    return movies;
+                }),
+                tap(movies => {
+                    this._movies.next(movies);
+                })
+            );
+    }
+
 
     fetchMovies() {
         return this.httpClient.get<{ [key: string]: MovieData }>('https://mobilnoapp.firebaseio.com/movies.json')
